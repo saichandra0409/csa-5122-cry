@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+// Function to perform Caesar Cipher
+void caesarCipher(char *text, int shift, int mode) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        char ch = text[i];
+
+        if (isalpha(ch)) {
+            char base = isupper(ch) ? 'A' : 'a';
+            if (mode == 1) {
+                // Encrypt
+                ch = (ch - base + shift) % 26 + base;
+            } else if (mode == 2) {
+                // Decrypt
+                ch = (ch - base - shift + 26) % 26 + base;
+            }
+        }
+
+        text[i] = ch;
+    }
+}
+
+int main() {
+    char text[1000];
+    int choice, shift;
+
+    printf("Enter the plain text: ");
+    fgets(text, sizeof(text), stdin);
+
+    // Remove newline character if present
+    size_t len = strlen(text);
+    if (len > 0 && text[len - 1] == '\n') {
+        text[len - 1] = '\0';
+    }
+
+    printf("Type 1 to Encrypt or 2 to Decrypt: ");
+    scanf("%d", &choice);
+
+    if (choice != 1 && choice != 2) {
+        printf("Invalid choice! Please enter 1 or 2.\n");
+        return 1;
+    }
+
+    printf("Enter the shift amount: ");
+    scanf("%d", &shift);
+
+    caesarCipher(text, shift, choice);
+
+    if (choice == 1) {
+        printf("Encrypted text: %s\n", text);
+    } else {
+        printf("Decrypted text: %s\n", text);
+    }
+
+    return 0;
+}
